@@ -45,7 +45,7 @@ class RemoDeCompeticion inherits Remo{
 
 class Persona {
   var peso // con property esta mal colocarlo porque peso perdido ya me devuelve su peso y aplicar rutina me hace el proceso de cambiar el peso
-
+  
   method tiempo()
 
   method caloriasPorKilo()
@@ -103,23 +103,35 @@ class PersonaAtleta inherits Persona{
   
 }
 
-class Predio { //predio nautico ejemplo
-  const property rutinas = #{remaEnDelta,caminosDeLosRemeros}
+class Predio {
+  const rutinas //es una coleccion de tipo set
 
-  method caloriasConsumidasDePredio(persona) {
-    return rutinas.sum({rutina => rutina.caloriasConsumidas(persona.tiempo())})
+  method caloriasConsumidasDePredio(tiempo) {
+    return rutinas.sum({rutina => rutina.caloriasConsumidas(tiempo)})
   }
+
+  method hayAlgunaRutinaEn(tiempo) {
+    return rutinas.any({rutina => rutina.caloriasConsumidas(tiempo) < 500})
+  }
+
+  method rutinaMasExigente(tiempo) {
+    return rutinas.max({rutina => rutina.caloriasConsumidas(tiempo)})
+  }
+
 }
 
 class Club {
-  const property predios = #{nautico,recreo}
+  const predios //es una coleccion de tipo set
 
   method elMejorPredioPara(persona) {
-    const rutinasCalorias = predios.map({predio => predio.caloriasConsumidasDePredio(persona)})
-    return if (rutinasCalorias.min() >rutinasCalorias.max()) rutinasCalorias.min() else rutinasCalorias.max()
-  } 
+    return predios.max({predio => predio.caloriasConsumidasDePredio(persona.tiempo())})
+  }
 
-  //acumular las calorias de una persona en una rutina o varias rutinas
-  //comparar las calorias de esas rutinas y devolver cual es la mejor rutina para la persona
+  method prediosTranquisPara(persona) {
+    return predios.filter({predio => predio.hayAlgunaRutinaEn(persona.tiempo())})
+  }
 
+  method rutinasMasExigentesDelClubPara(persona) {
+    return predios.map({predio => predio.rutinaMasExigente(persona.tiempo())})
+  }
 }
