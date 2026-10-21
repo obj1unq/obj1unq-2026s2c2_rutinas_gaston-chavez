@@ -46,6 +46,14 @@ class RemoDeCompeticion inherits Remo{
 class Persona {
   var peso // con property esta mal colocarlo porque peso perdido ya me devuelve su peso y aplicar rutina me hace el proceso de cambiar el peso
   
+  method peso() { //CORREGGIR
+    return peso
+  }
+
+  method peso(_peso) { //CORREGIR
+    peso = _peso
+  }
+
   method tiempo()
 
   method caloriasPorKilo()
@@ -106,11 +114,11 @@ class PersonaAtleta inherits Persona{
 class Predio {
   const rutinas //es una coleccion de tipo set
 
-  method caloriasConsumidasDePredio(tiempo) {
+  method caloriasConsumidasEn(tiempo) {
     return rutinas.sum({rutina => rutina.caloriasConsumidas(tiempo)})
   }
 
-  method hayAlgunaRutinaEn(tiempo) {
+  method hayAlgunaRutinaTranqui(tiempo) {
     return rutinas.any({rutina => rutina.caloriasConsumidas(tiempo) < 500})
   }
 
@@ -124,11 +132,11 @@ class Club {
   const predios //es una coleccion de tipo set
 
   method elMejorPredioPara(persona) {
-    return predios.max({predio => predio.caloriasConsumidasDePredio(persona.tiempo())})
+    return predios.max({predio => predio.caloriasConsumidasEn(persona.tiempo())})
   }
 
   method prediosTranquisPara(persona) {
-    return predios.filter({predio => predio.hayAlgunaRutinaEn(persona.tiempo())})
+    return predios.filter({predio => predio.hayAlgunaRutinaTranqui(persona.tiempo())})
   }
 
   method rutinasMasExigentesDelClubPara(persona) {
