@@ -44,11 +44,13 @@ class RemoDeCompeticion inherits Remo{
 }
 
 class Persona {
-  var property peso
+  var peso // con property esta mal colocarlo porque peso perdido ya me devuelve su peso y aplicar rutina me hace el proceso de cambiar el peso
 
   method tiempo()
 
   method caloriasPorKilo()
+
+  method puedeRealizarRutina(rutina)
 
   method pesoPerdido(rutina){
     return rutina.caloriasConsumidas(self.tiempo())/ self.caloriasPorKilo()
@@ -59,8 +61,11 @@ class Persona {
     peso = (peso - self.pesoPerdido(rutina)).truncate(3)
   }
 
-  method validarSiPuedeAplicarRutina(rutina) 
-
+  method validarSiPuedeAplicarRutina(rutina) {
+    if(self.puedeRealizarRutina(rutina)) {
+      self.error("No se puede realizar la rutina")
+    }
+  }
 }
 
 class PersonaSedentaria inherits Persona {
@@ -70,11 +75,11 @@ class PersonaSedentaria inherits Persona {
     return 7000
   }
 
-  override method validarSiPuedeAplicarRutina(rutina) {
-    if(peso <= 50){
-      self.error("no puede aplicar rutina")
-    }
+  override method puedeRealizarRutina(rutina) {
+    return peso <= 50
   }
+
+
 }
 
 class PersonaAtleta inherits Persona{
@@ -91,9 +96,30 @@ class PersonaAtleta inherits Persona{
     return 8000
   }
 
-  override method validarSiPuedeAplicarRutina(rutina) {
-    if(rutina.caloriasConsumidas(self.tiempo()) <= 10000){
-      self.error("no puede aplicar rutina")
-    }
+  override method puedeRealizarRutina(rutina) {
+    return rutina.caloriasConsumidas(self.tiempo()) <= 10000
   }
+
+  
+}
+
+class Predio { //predio nautico ejemplo
+  const property rutinas = #{remaEnDelta,caminosDeLosRemeros}
+
+  method caloriasConsumidasDePredio(persona) {
+    return rutinas.sum({rutina => rutina.caloriasConsumidas(persona.tiempo())})
+  }
+}
+
+class Club {
+  const property predios = #{nautico,recreo}
+
+  method elMejorPredioPara(persona) {
+    const rutinasCalorias = predios.map({predio => predio.caloriasConsumidasDePredio(persona)})
+    return if (rutinasCalorias.min() >rutinasCalorias.max()) rutinasCalorias.min() else rutinasCalorias.max()
+  } 
+
+  //acumular las calorias de una persona en una rutina o varias rutinas
+  //comparar las calorias de esas rutinas y devolver cual es la mejor rutina para la persona
+
 }
