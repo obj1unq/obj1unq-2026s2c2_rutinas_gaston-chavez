@@ -5,4 +5,4 @@
     la clase PersonaAtleta redefine puedeRealizarRutina(rutina) y pesoPerdido(rutina)
 
 2. Dibujar un diagrama estático que muestre la relación entre clubes, predios y rutinas. Se pide solo incluir los métodos polimórficos y los relacionados con el template method del punto anterior.
--Link diagrama: https://imgur.com/a/NVY0v0X
+-Link diagrama: https://imgur.com/a/QMJNsOH

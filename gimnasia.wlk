@@ -5,7 +5,7 @@ class Rutina {
     return 100 * (tiempo - self.descanso(tiempo)) * self.intensidad()
   }
 
-  method descanso(tiempo) 
+  method descanso(tiempo)
 }
 
 
@@ -107,14 +107,13 @@ class PersonaAtleta inherits Persona{
   override method puedeRealizarRutina(rutina) {
     return rutina.caloriasConsumidas(self.tiempo()) <= 10000
   }
-
   
 }
 
 class Predio {
   const rutinas //es una coleccion de tipo set
 
-  method caloriasConsumidasEn(tiempo) {
+  method caloriasConsumidas(tiempo) {
     return rutinas.sum({rutina => rutina.caloriasConsumidas(tiempo)})
   }
 
@@ -125,14 +124,13 @@ class Predio {
   method rutinaMasExigente(tiempo) {
     return rutinas.max({rutina => rutina.caloriasConsumidas(tiempo)})
   }
-
 }
 
 class Club {
   const predios //es una coleccion de tipo set
 
   method elMejorPredioPara(persona) {
-    return predios.max({predio => predio.caloriasConsumidasEn(persona.tiempo())})
+    return predios.max({predio => predio.caloriasConsumidas(persona.tiempo())})
   }
 
   method prediosTranquisPara(persona) {
